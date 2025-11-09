@@ -1,48 +1,61 @@
-// src/redux/CartSlice.jsx
-import { createSlice } from "@reduxjs/toolkit";
+// src/CartSlice.jsx
+import { createSlice } from '@reduxjs/toolkit';
 
 const cartSlice = createSlice({
-  name: "cart",
+  name: 'cart',
   initialState: {
-    items: [], // holds all cart items
+    // items: array of { name, image, cost (string, e.g. "$15"), quantity }
+    items: [],
   },
-
   reducers: {
-    // ✅ Add item to cart
+    // payload can be either the product object { name, image, cost } or similar
     addItem: (state, action) => {
-      const { name, image, cost } = action.payload;
-      const existingItem = state.items.find((item) => item.name === name);
+      const payload = action.payload || {};
+      const name = payload.name;
+      if (!name) return;
+      const image = payload.image || '';
+      const cost = payload.cost !== undefined ? String(payload.cost) : '$0';
 
-      if (existingItem) {
-        // If already exists, just increase quantity
-        existingItem.quantity++;
+      const existing = state.items.find((it) => it.name === name);
+      if (existing) {
+        existing.quantity = (existing.quantity || 0) + 1;
       } else {
-        // Otherwise, add new item with quantity 1
-        state.items.push({ name, image, cost, quantity: 1 });
+        state.items.push({
+          name,
+          image,
+          cost,
+          quantity: 1,
+        });
       }
     },
 
-    // ✅ Remove item from cart
+    // remove by name or payload={name: "..."} or payload is string
     removeItem: (state, action) => {
-      // The payload is the item name (string)
-      state.items = state.items.filter(
-        (item) => item.name !== action.payload.name
-      );
+      const payload = action.payload;
+      const name = typeof payload === 'string' ? payload : payload?.name;
+      if (!name) return;
+      state.items = state.items.filter((it) => it.name !== name);
     },
 
-    // ✅ Update item quantity
+    // updateQuantity { name, quantity }
     updateQuantity: (state, action) => {
-      const { name, quantity } = action.payload;
-      const itemToUpdate = state.items.find((item) => item.name === name);
-      if (itemToUpdate) {
-        itemToUpdate.quantity = quantity;
+      const { name, quantity } = action.payload || {};
+      if (!name) return;
+      const q = Number(quantity) || 0;
+      const item = state.items.find((it) => it.name === name);
+      if (!item) return;
+      if (q <= 0) {
+        state.items = state.items.filter((it) => it.name !== name);
+      } else {
+        item.quantity = q;
       }
+    },
+
+    clearCart: (state) => {
+      state.items = [];
     },
   },
 });
 
-// ✅ Export action creators to use in components
-export const { addItem, removeItem, updateQuantity } = cartSlice.actions;
-
-// ✅ Export reducer as default to use in store.js
+export const { addItem, removeItem, updateQuantity, clearCart } = cartSlice.actions;
 export default cartSlice.reducer;
