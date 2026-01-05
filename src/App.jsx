@@ -3,21 +3,18 @@ import { Routes, Route } from 'react-router-dom';
 import AboutUs from './AboutUs';
 import ProductList from './ProductList';
 import CarDetail from './CarDetail';
+import CartItem from './CartItem'; // Importăm componenta Coș
 import './App.css';
 
 function App() {
   return (
     <div className="App">
       <Routes>
-        {/* Pagina de Start */}
         <Route path="/" element={<AboutUs />} />
-        
-        {/* Lista de mașini */}
         <Route path="/cars" element={<ProductList />} />
-        
-        {/* Pagina de Detaliu (DINAMICĂ) */}
-        {/* Aceasta este ruta pe care router-ul o căuta și nu o găsea! */}
         <Route path="/cars/:id" element={<CarDetail />} />
+        {/* RUTA NOUĂ PENTRU COȘ */}
+        <Route path="/cart" element={<CartItem />} />
       </Routes>
     </div>
   );

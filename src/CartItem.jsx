@@ -1,120 +1,101 @@
-import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { removeItem, updateQuantity } from "./CartSlice"; // Removed unused clearCart if not required by UI
-import "./CartItem.css";
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { removeItem, updateQuantity } from './CartSlice';
+import { Link } from 'react-router-dom'; // Importăm Link
+import './CartItem.css'; 
 
-/**
- * CartItem Component
- * Manages the display and logic for the shopping cart, including
- * quantity adjustments, item removal, and subtotal/total calculations.
- */
-function CartItem({ onContinueShopping }) {
-  const cartItems = useSelector((state) => state.cart.items);
+const CartItem = () => { // Nu mai avem nevoie de props
+  const cart = useSelector(state => state.cart.items);
   const dispatch = useDispatch();
 
-  /**
-   * Calculates the total monetary value of all items currently in the cart.
-   * Logic: Sums (price * quantity) for every item.
-   */
   const calculateTotalAmount = () => {
-    return cartItems.reduce((total, item) => {
-      const price = parseFloat(item.cost.replace("$", ""));
-      return total + price * item.quantity;
-    }, 0).toFixed(2);
+    let total = 0;
+    cart.forEach((item) => {
+        total += item.cost * item.quantity;
+    });
+    return total;
   };
 
-  /**
-   * Calculates the total cost for a specific individual item type.
-   */
-  const calculateTotalCost = (item) => {
-    const price = parseFloat(item.cost.replace("$", ""));
-    return (price * item.quantity).toFixed(2);
-  };
-
-  /**
-   * Increases the quantity of an item in the store.
-   */
   const handleIncrement = (item) => {
-    dispatch(updateQuantity({ name: item.name, quantity: item.quantity + 1 }));
+    dispatch(updateQuantity({ id: item.id, quantity: item.quantity + 1 }));
   };
 
-  /**
-   * Decreases item quantity. If quantity reaches 0, the item is removed.
-   */
   const handleDecrement = (item) => {
     if (item.quantity > 1) {
-      dispatch(updateQuantity({ name: item.name, quantity: item.quantity - 1 }));
+      dispatch(updateQuantity({ id: item.id, quantity: item.quantity - 1 }));
     } else {
-      // Logic for removing item if quantity hits 0
-      dispatch(removeItem(item.name));
+      dispatch(removeItem(item.id));
     }
   };
 
-  /**
-   * Removes an item completely from the Redux state.
-   */
-  const handleRemove = (name) => {
-    dispatch(removeItem(name));
+  const handleRemove = (item) => {
+    dispatch(removeItem(item.id));
   };
 
-  const handleCheckoutShopping = (e) => {
-    alert('Functionality to be added for future reference');
+  const handleCheckoutShopping = () => {
+    alert('Funcționalitatea de plată urmează să fie implementată!');
   };
 
   return (
     <div className="cart-container">
-      <h2 style={{ color: 'black' }}>Total Cart Amount: ${calculateTotalAmount()}</h2>
-      
-      <div>
-        {cartItems.map((item) => (
-          <div className="cart-item" key={item.name}>
-            <img className="cart-item-image" src={item.image} alt={item.name} />
-            <div className="cart-item-details">
-              <div className="cart-item-name">{item.name}</div>
-              <div className="cart-item-cost">{item.cost}</div>
-              
-              <div className="cart-item-quantity">
-                <button 
-                  className="cart-item-button cart-item-button-dec" 
-                  onClick={() => handleDecrement(item)}
-                >
-                  -
-                </button>
-                <span className="cart-item-quantity-value">{item.quantity}</span>
-                <button 
-                  className="cart-item-button cart-item-button-inc" 
-                  onClick={() => handleIncrement(item)}
-                >
-                  +
-                </button>
-              </div>
-              
-              <div className="cart-item-total">Total: ${calculateTotalCost(item)}</div>
-              
-              <button 
-                className="cart-item-delete" 
-                onClick={() => handleRemove(item.name)}
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-        ))}
+      {/* Navbar simplu pentru Cart */}
+      <div style={{ marginBottom: '20px', borderBottom: '1px solid #ddd', paddingBottom: '10px' }}>
+          <Link to="/cars" style={{ textDecoration: 'none', color: '#ff4d4d', fontWeight: 'bold' }}>
+              ← Înapoi la Flotă
+          </Link>
       </div>
 
-      <div style={{ marginTop: '20px', color: 'black' }} className='total_cart_amount'></div>
+      <h2 style={{ color: 'black' }}>Coșul tău de rezervări</h2>
       
-      <div className="continue_shopping_btn">
-        <button className="get-started-button" onClick={(e) => onContinueShopping(e)}>
-          Continue Shopping
-        </button>
-        <br />
-        <button className="get-started-button1" onClick={(e) => handleCheckoutShopping(e)}>
-          Checkout
-        </button>
-      </div>
+      {cart.length === 0 ? (
+        <div className="empty-cart">
+            <p>Nu ai nicio mașină rezervată momentan.</p>
+            <Link to="/cars">
+                <button className="get-started-btn">Înapoi la Flotă</button>
+            </Link>
+        </div>
+      ) : (
+        <div>
+            <div className="cart-items-list">
+                {cart.map(item => (
+                <div className="cart-item" key={item.id}>
+                    <img className="cart-item-image" src={item.images ? item.images[0] : item.image} alt={item.name} />
+                    <div className="cart-item-details">
+                        <div className="cart-item-name">{item.name}</div>
+                        <div className="cart-item-cost">€{item.cost} / zi</div>
+                        
+                        <div className="cart-item-quantity">
+                            <button className="cart-item-button cart-item-button-dec" onClick={() => handleDecrement(item)}>-</button>
+                            <span className="cart-item-count">{item.quantity}</span>
+                            <button className="cart-item-button cart-item-button-inc" onClick={() => handleIncrement(item)}>+</button>
+                        </div>
+                        
+                        <div className="cart-item-total">Subtotal: €{item.cost * item.quantity}</div>
+                        <button className="cart-item-delete" onClick={() => handleRemove(item)}>Șterge</button>
+                    </div>
+                </div>
+                ))}
+            </div>
+            
+            <div className="cart-summary">
+                <div className="total_cart_amount" style={{ marginTop: '20px', color: 'black' }}>
+                    Total estimat (1 zi): <strong>€{calculateTotalAmount()}</strong>
+                </div>
+                
+                <div className="continue_shopping_btn">
+                    <Link to="/cars">
+                        <button className="get-started-btn">Continuă Navigarea</button>
+                    </Link>
+                    <br />
+                    <button className="get-started-btn1" onClick={handleCheckoutShopping} style={{backgroundColor: '#ff4d4d', color: 'white', marginTop: '10px'}}>
+                        Finalizează Rezervarea
+                    </button>
+                </div>
+            </div>
+        </div>
+      )}
     </div>
   );
-}
+};
 
 export default CartItem;

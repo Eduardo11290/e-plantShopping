@@ -1,61 +1,42 @@
-// src/CartSlice.jsx
 import { createSlice } from '@reduxjs/toolkit';
 
-const cartSlice = createSlice({
+export const CartSlice = createSlice({
   name: 'cart',
   initialState: {
-    // items: array of { name, image, cost (string, e.g. "$15"), quantity }
     items: [],
   },
   reducers: {
-    // payload can be either the product object { name, image, cost } or similar
+    // 1. Adăugare produs (Verifică duplicatele pentru butonul gri)
     addItem: (state, action) => {
-      const payload = action.payload || {};
-      const name = payload.name;
-      if (!name) return;
-      const image = payload.image || '';
-      const cost = payload.cost !== undefined ? String(payload.cost) : '$0';
-
-      const existing = state.items.find((it) => it.name === name);
-      if (existing) {
-        existing.quantity = (existing.quantity || 0) + 1;
-      } else {
-        state.items.push({
-          name,
-          image,
-          cost,
-          quantity: 1,
-        });
+      const { id } = action.payload;
+      const existingItem = state.items.find(item => item.id === id);
+      
+      if (!existingItem) {
+        // Adăugăm produsul cu cantitate inițială 1
+        state.items.push({ ...action.payload, quantity: 1 });
       }
     },
 
-    // remove by name or payload={name: "..."} or payload is string
+    // 2. Ștergere produs din coș
     removeItem: (state, action) => {
-      const payload = action.payload;
-      const name = typeof payload === 'string' ? payload : payload?.name;
-      if (!name) return;
-      state.items = state.items.filter((it) => it.name !== name);
+      // Filtrăm lista să excludem produsul cu ID-ul primit
+      // Suportă și dacă primește întreg obiectul sau doar ID-ul
+      const idToRemove = action.payload.id || action.payload;
+      state.items = state.items.filter(item => item.id !== idToRemove);
     },
 
-    // updateQuantity { name, quantity }
+    // 3. Actualizare cantitate (Asta lipsea și cauza eroarea!)
     updateQuantity: (state, action) => {
-      const { name, quantity } = action.payload || {};
-      if (!name) return;
-      const q = Number(quantity) || 0;
-      const item = state.items.find((it) => it.name === name);
-      if (!item) return;
-      if (q <= 0) {
-        state.items = state.items.filter((it) => it.name !== name);
-      } else {
-        item.quantity = q;
+      const { id, quantity } = action.payload;
+      const itemToUpdate = state.items.find(item => item.id === id);
+      if (itemToUpdate) {
+        itemToUpdate.quantity = quantity;
       }
-    },
-
-    clearCart: (state) => {
-      state.items = [];
     },
   },
 });
 
-export const { addItem, removeItem, updateQuantity, clearCart } = cartSlice.actions;
-export default cartSlice.reducer;
+// EXPORTĂM TOATE CELE 3 ACȚIUNI
+export const { addItem, removeItem, updateQuantity } = CartSlice.actions;
+
+export default CartSlice.reducer;
