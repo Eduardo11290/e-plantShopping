@@ -1,0 +1,137 @@
+/* Footer Container */
+.footer {
+    background-color: #050505; /* Negru profund */
+    color: #b0b0b0; /* Gri deschis pentru text, nu alb pur (e mai odihnitor) */
+    padding: 70px 0 20px;
+    font-family: 'Roboto', sans-serif;
+    border-top: 1px solid #222;
+    margin-top: 80px; /* Spațiu față de conținutul de sus */
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr; /* Prima coloană mai lată */
+    gap: 40px;
+    padding: 0 20px;
+}
+
+/* Headings */
+.footer-section h3, 
+.footer-section h4 {
+    color: #fff;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.footer-logo {
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+.highlight {
+    color: #ff4d4d;
+}
+
+/* Text descriere */
+.footer-description {
+    line-height: 1.6;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+}
+
+/* Social Icons */
+.social-icons {
+    display: flex;
+    gap: 15px;
+}
+
+.social-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: #222;
+    color: #fff;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    font-size: 1.1rem;
+    text-decoration: none;
+}
+
+.social-icon:hover {
+    background: #ff4d4d;
+    transform: translateY(-3px);
+}
+
+/* Link-uri utile */
+.links ul {
+    list-style: none;
+    padding: 0;
+}
+
+.links ul li {
+    margin-bottom: 12px;
+}
+
+.links ul li a {
+    color: #b0b0b0;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.links ul li a:hover {
+    color: #ff4d4d;
+    transform: translateX(5px); /* Mișcare fină spre dreapta */
+}
+
+/* Contact Info */
+.contact-item {
+    display: flex;
+    align-items: flex-start; /* Aliniere sus pentru adrese lungi */
+    margin-bottom: 15px;
+    gap: 15px;
+}
+
+.contact-item .icon {
+    color: #ff4d4d;
+    font-size: 1.2rem;
+    margin-top: 3px;
+}
+
+.program {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #222;
+    color: #fff;
+}
+
+/* Footer Bottom */
+.footer-bottom {
+    text-align: center;
+    margin-top: 50px;
+    padding-top: 20px;
+    border-top: 1px solid #1a1a1a;
+    font-size: 0.85rem;
+    color: #666;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .footer-content {
+        grid-template-columns: 1fr; /* O singură coloană pe mobil */
+        text-align: center;
+    }
+
+    .contact-item {
+        justify-content: center;
+    }
+    
+    .social-icons {
+        justify-content: center;
+    }
+}

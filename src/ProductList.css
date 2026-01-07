@@ -1,159 +1,79 @@
+/* src/ProductList.css */
 
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600;800&display=swap');
-
-/* =========================================
-   Navbar Styles
-   ========================================= */
-.navbar {
-    background-color: #1a1a1a !important; 
-    color: #fff;
-    padding: 15px 30px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 1.1rem;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.5); 
-    position: sticky; /* Keeps navbar at top while scrolling */
-    top: 0;
-    z-index: 100;
-    border-bottom: 1px solid #333;
-}
-
-/* Navbar Links */
-.navbar a {
-    color: #ecf0f1;
-    text-decoration: none;
-    font-weight: 600;
-    transition: color 0.3s ease;
-}
-
-.navbar a:hover {
-    color: #e74c3c; 
-}
-
-/* =========================================
-   Product Grid Layout
-   ========================================= */
+/* Containerul principal care ține "mijlocul negru" */
 .product-grid {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 40px 20px;
-    background-color: #121212; /* Dark background matches body */
+    background-color: #000000; /* Negru pur în mijloc */
+    max-width: 1100px; /* Lățimea maximă a zonei negre */
+    margin: 80px auto 0 auto; /* Centrat pe mijloc cu margine sus */
+    padding: 40px;
     min-height: 100vh;
+    box-shadow: 0 0 50px rgba(0,0,0,0.5); /* Umbră ca să se separe de gri */
 }
 
-/* Category Title */
+/* Titlul Categoriei */
 h2 {
     color: #fff;
-    border-bottom: 3px solid #e74c3c; /* Red underline */
+    border-bottom: 2px solid #333;
     padding-bottom: 10px;
-    margin-top: 40px;
     margin-bottom: 30px;
+    font-size: 1.8rem;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
 }
 
+/* Grid-ul de carduri */
 .product-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 30px;
-    margin-bottom: 60px; /* Space between categories */
-    width: 100%;
-    max-width: 1200px;
 }
 
-/* =========================================
-   Product Card Styles
-   ========================================= */
+/* CARDUL MAȘINII - Stilizare Premium */
 .product-card {
-    background-color: #1e1e1e; /* Dark Card Background */
-    border: 1px solid #333;
+    background-color: #111; /* Cardul e un gri foarte închis, nu negru complet */
+    border: 1px solid #222;
     border-radius: 12px;
-    width: 300px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    overflow: hidden;
 }
 
+/* Efect de hover pe card */
 .product-card:hover {
-    transform: translateY(-8px); /* Lifts up on hover */
-    box-shadow: 0 12px 20px rgba(0,0,0,0.5);
-    border-color: #555;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(255, 77, 77, 0.15); /* Umbră roșiatică fină */
+    border-color: #ff4d4d;
 }
 
-
-.image-container {
+.product-card img {
     width: 100%;
-    height: 200px;
-    background-color: #000;
-    overflow: hidden;
-}
-
-.product-image {
-    width: 100%;
-    height: 100%;
+    height: 220px;
     object-fit: cover;
     transition: transform 0.5s ease;
 }
 
-.product-card:hover .product-image {
-    transform: scale(1.05); 
+.product-card:hover img {
+    transform: scale(1.05); /* Zoom fin pe poză la hover */
 }
 
-/* Product Details Section */
-.product-details {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-}
-
-.product-title {
-    font-size: 1.3rem;
-    font-weight: 700;
-    margin-bottom: 8px;
+/* Butoanele */
+.details-btn {
+    background: #222;
     color: #fff;
+    border: 1px solid #444;
 }
 
-.product-description {
-    font-size: 0.9rem;
-    color: #b0b0b0; /* Light Grey text */
-    margin-bottom: 20px;
-    line-height: 1.4;
-    flex-grow: 1;
+.details-btn:hover {
+    background: #fff;
+    color: #000;
 }
 
-.product-cost {
-    font-size: 1.4rem;
-    font-weight: 800;
-    color: #e74c3c; /* Red price to match brand */
-    margin-bottom: 15px;
-}
-
-/* Action Button */
-.product-button {
-    background-color: #e74c3c;
-    color: white;
-    border: none;
-    padding: 12px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 700;
-    text-transform: uppercase;
-    transition: background-color 0.3s ease;
-    width: 100%;
-}
-
-.product-button:hover {
-    background-color: #c0392b; /* Darker red on hover */
-}
-
-.product-button:disabled {
-    background-color: #444;
-    color: #888;
-    cursor: not-allowed;
+/* Responsive pentru mobil (să ocupe tot ecranul) */
+@media (max-width: 768px) {
+    .product-grid {
+        width: 100%;
+        margin-top: 60px;
+        padding: 20px;
+    }
 }
