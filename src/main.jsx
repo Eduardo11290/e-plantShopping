@@ -11,7 +11,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <Provider store={store}>
       {/* 2. AICI ESTE FIX-UL: Setăm basename */}
-      <BrowserRouter basename="/e-plantShopping">
+      <BrowserRouter basename="/AutoRentPremium">
         <App />
       </BrowserRouter>
     </Provider>
