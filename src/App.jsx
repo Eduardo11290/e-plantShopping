@@ -3,24 +3,26 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ProductList from './ProductList';
 import CarDetail from './CarDetail';
 import CartItem from './CartItem';
-// CORECTAT: Importăm AboutUs direct din src (fără /components) conform pozei tale
 import AboutUs from './AboutUs.jsx'; 
 import Footer from './components/Footer.jsx'; 
+import Navbar from './components/Navbar.jsx'; // <--- NEW IMPORT
 import LegalPage from './LegalPage.jsx'; 
 
 function App() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       
-      <div style={{ flex: 1 }}>
+      {/* GLOBAL NAVBAR - ALWAYS VISIBLE */}
+      <Navbar /> 
+
+      {/* Main Content */}
+      <div style={{ flex: 1, marginTop: '80px' }}> {/* Margin top to push content below fixed Navbar */}
         <Routes>
           <Route path="/" element={<ProductList />} />
+          <Route path="/about" element={<AboutUs />} />
           <Route path="/cars" element={<ProductList />} />
           <Route path="/cart" element={<CartItem />} />
           <Route path="/cars/:id" element={<CarDetail />} />
-          
-          {/* Ruta pentru About Us */}
-          <Route path="/about" element={<AboutUs />} />
           
           <Route path="/termeni" element={<LegalPage title="Termeni și Condiții" />} />
           <Route path="/confidentialitate" element={<LegalPage title="Politica de Confidențialitate" />} />

@@ -24,8 +24,23 @@ function ProductList() {
         return cartItems.some(item => item.id === carId);
     };
 
+    // --- AICI ESTE MODIFICAREA PENTRU REZERVARE RAPIDĂ ---
     const handleAddToCart = (product) => {
-        dispatch(addItem(product));
+        // Calculăm automat: Azi -> Mâine (1 zi)
+        const today = new Date();
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+
+        const startDate = today.toISOString().split('T')[0];
+        const endDate = tomorrow.toISOString().split('T')[0];
+
+        // Trimitem mașina în coș cu aceste date
+        dispatch(addItem({
+            ...product,
+            quantity: 1,
+            startDate: startDate,
+            endDate: endDate
+        }));
     };
 
     const navbarStyle = {
@@ -34,31 +49,12 @@ function ProductList() {
 
     return (
         <div className="main-container">
-            <div style={navbarStyle}>
-                
-                {/* --- AICI ESTE SCHIMBAREA: Link către /about --- */}
-                <Link to="/about" style={{ textDecoration: 'none', color: 'white' }}>
-                    <h3 style={{margin:0, textTransform: 'uppercase', letterSpacing: '1px'}}>AutoRent <span style={{color: '#ff4d4d'}}>Premium</span></h3>
-                </Link>
-
-                <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
-                    <Link to="/cart" style={{ textDecoration: 'none', color: 'white', display: 'flex', alignItems: 'center' }}>
-                        <span style={{ marginRight: '15px', fontWeight: 'bold', color: '#ccc' }}>Vezi Coșul</span>
-                        <div style={{ fontSize: '24px', position: 'relative' }}>
-                            🛒 
-                            {cartItems.length > 0 && (
-                                <span style={{fontSize: '14px', background: '#ff4d4d', borderRadius: '50%', padding: '2px 6px', verticalAlign: 'top', position: 'absolute', top: '-5px', right: '-10px', color: 'white'}}>
-                                    {cartItems.length}
-                                </span>
-                            )}
-                        </div>
-                    </Link>
-                </div>
-            </div>
-
+            {/* Navbar-ul global e gestionat de App.jsx, aici e doar conținutul */}
+            
             <div className="product-grid">
                 {carsData.map((category, index) => (
-                    <div key={index} style={{ marginBottom: '50px' }}>
+                    // Adăugăm ID-uri pentru scroll-ul din Navbar
+                    <div key={index} id={`cat-${index}`} style={{ marginBottom: '50px', scrollMarginTop: '100px' }}>
                         <h2>{category.category}</h2>
                         
                         <div className="product-list">

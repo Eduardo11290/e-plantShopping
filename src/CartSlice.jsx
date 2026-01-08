@@ -7,16 +7,20 @@ export const CartSlice = createSlice({
   },
   reducers: {
     addItem: (state, action) => {
-      const { id } = action.payload;
+      const { id, startDate, endDate, quantity } = action.payload;
       const existingItem = state.items.find(item => item.id === id);
       
       if (!existingItem) {
-        // AICI E SCHIMBAREA: Luăm 'quantity' din payload sau punem 1 implicit
-        // În cazul nostru, 'quantity' va reprezenta NUMĂRUL DE ZILE
         state.items.push({ 
             ...action.payload, 
-            quantity: action.payload.quantity || 1 
+            quantity: quantity || 1,
+            startDate: startDate || 'Neselectat',
+            endDate: endDate || 'Neselectat'
         });
+      } else {
+        existingItem.quantity = quantity;
+        existingItem.startDate = startDate;
+        existingItem.endDate = endDate;
       }
     },
 
@@ -27,9 +31,21 @@ export const CartSlice = createSlice({
 
     updateQuantity: (state, action) => {
       const { id, quantity } = action.payload;
-      const itemToUpdate = state.items.find(item => item.id === id);
-      if (itemToUpdate) {
-        itemToUpdate.quantity = quantity;
+      const item = state.items.find(item => item.id === id);
+      
+      if (item) {
+        item.quantity = quantity;
+
+        // --- AICI ESTE NOUL COD PENTRU DATA DINAMICĂ ---
+        // Dacă avem o dată de start validă (nu e "Neselectat"), recalculăm data de final
+        if (item.startDate && item.startDate !== 'Neselectat') {
+            const start = new Date(item.startDate);
+            // Adăugăm numărul de zile (quantity) la data de start
+            start.setDate(start.getDate() + quantity);
+            
+            // Formatăm noua dată ca YYYY-MM-DD
+            item.endDate = start.toISOString().split('T')[0];
+        }
       }
     },
   },

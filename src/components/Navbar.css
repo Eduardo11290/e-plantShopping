@@ -1,0 +1,158 @@
+/* Navbar Styling */
+.navbar {
+    background: rgba(0, 0, 0, 0.95); /* Almost solid black */
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    position: fixed; /* Stick to top */
+    top: 0;
+    width: 100%;
+    z-index: 9999;
+    border-bottom: 1px solid #222;
+    backdrop-filter: blur(10px);
+}
+
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 20px;
+}
+
+/* Logo */
+.navbar-logo {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.highlight {
+    color: #ff4d4d;
+}
+
+/* Navigation Menu */
+.nav-menu {
+    display: flex;
+    list-style: none;
+    gap: 10px;
+}
+
+.nav-links {
+    color: #fff;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    padding: 10px 15px;
+    height: 100%;
+    cursor: pointer;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.nav-links:hover {
+    color: #ff4d4d;
+}
+
+.icon-tiny {
+    margin-left: 5px;
+    font-size: 0.8rem;
+}
+
+/* DROPDOWN MENU MAGIC */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none; /* Hidden by default */
+    position: absolute;
+    background-color: #111;
+    min-width: 200px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
+    z-index: 1;
+    border-top: 2px solid #ff4d4d;
+    border-radius: 0 0 8px 8px;
+    top: 100%;
+    left: 0;
+}
+
+.dropdown-link {
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: 0.2s;
+    border-bottom: 1px solid #222;
+}
+
+.dropdown-link:hover {
+    background-color: #1a1a1a;
+    color: #ff4d4d;
+    padding-left: 20px; /* Slide effect */
+}
+
+/* Show Dropdown on Hover */
+.dropdown:hover .dropdown-content {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+/* Cart Section */
+.cart-icon-container {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    transition: 0.3s;
+}
+
+.cart-icon-container:hover {
+    color: #ff4d4d;
+}
+
+.cart-text {
+    margin-right: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+}
+
+.cart-icon-wrapper {
+    position: relative;
+    font-size: 1.5rem;
+}
+
+.cart-badge {
+    position: absolute;
+    top: -8px;
+    right: -10px;
+    background-color: #ff4d4d;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: bold;
+    border-radius: 50%;
+    padding: 2px 6px;
+    border: 2px solid #000;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Mobile Responsive */
+@media screen and (max-width: 960px) {
+    .nav-menu {
+        display: none; /* Hide regular menu on mobile for now to keep it simple */
+    }
+}
